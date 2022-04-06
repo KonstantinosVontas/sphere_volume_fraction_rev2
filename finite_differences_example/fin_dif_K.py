@@ -2,12 +2,14 @@
 
 import matplotlib.pyplot as plt
 import numpy as np
+import csv
+import pandas as pd
 
 path = "../overlap_curvature.csv"
 
-data = np.genfromtxt(path, delimiter=',')
+k_exact_data = np.genfromtxt(path, delimiter=',')
 
-uu = data[:, :27]
+uu = k_exact_data[:, :27]
 h = 1.
 
 def grad(u):
@@ -81,11 +83,32 @@ for i in range(N):
     n = normal(g)
     kk_fd[i] = curv(n)
 
-kk_exact = data[:, -1]
+kk_exact = k_exact_data[:, -1]
+
 
 plt.scatter(kk_exact, kk_fd)
+k = np.linspace(0,1)
+plt.plot(k, k)
 plt.xlabel(r'$\kappa_\mathrm{exact}$')
 plt.ylabel(r'$\kappa_\mathrm{FD}$')
-plt.xlim(0, 1)
-plt.ylim(0, 1)
-plt.savefig('a.pdf')
+#plt.xlim(0, 1)
+#plt.ylim(0, 1)
+plt.savefig('K_FD_overK_exact.pdf')
+
+print(kk_fd)
+
+
+f = open('K_FD_column.csv', 'w')
+
+# create the csv writer
+writer = csv.writer(f)
+#kk_fd2 = np.transpose(kk_fd)
+# write a row to the csv file
+writer.writerow(kk_fd)
+
+pd.read_csv('K_FD_column.csv', header=None).T.to_csv('K_FD_final.csv', header=False, index=False)
+
+
+
+# close the file
+f.close()
