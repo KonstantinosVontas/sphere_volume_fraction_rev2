@@ -5,16 +5,9 @@ import numpy as np
 import csv
 import pandas as pd
 
-path = "../overlap_curvature.csv"
-
-k_exact_data = np.genfromtxt(path, delimiter=',')
-
-uu = k_exact_data[:, :27]
-h = 1.
 
 def grad(u):
-    u = u.reshape((3, 3, 3))
-    u = np.transpose(u, (2, 1, 0))
+    u = u.reshape((3, 3, 3)) # z is most frequent, u[x, y, z]
     g = np.zeros((3, 2, 3)) # (face direction, face side, component of gradient)
     '''
     -------------
@@ -74,7 +67,36 @@ def curv(n):
     k = (n[0, 1, 0] - n[0, 0, 0]) / h + \
         (n[1, 1, 1] - n[1, 0, 1]) / h + \
         (n[2, 1, 2] - n[2, 0, 2]) / h
+
     return k
+
+
+
+
+def gen_smooth(N, h=1, rmin=10, rmax=15):
+    res = np.empty((N, 28))
+    for i in range(N):
+        r = np.random.uniform(rmin, rmax)
+        x0, y0, z0 = r, 0, 0 # Center of central cell.
+        k_ref = 2 / r
+        for ix in range(3):
+            for iy in range(3):
+                for iz in range(3):
+                    x = x0 + h * (ix - 1) # Center of neighboring cell.
+                    y = y0 + h * (iy - 1)
+                    z = z0 + h * (iz - 1)
+                    u = -(x**2 + y**2 + z**2)**0.5
+                    res[i, ix * 9 + iy * 3 + iz] = u
+        res[i, -1] = k_ref
+    return res
+
+#path = "../overlap_curvature.csv"
+#k_ref_data = np.genfromtxt(path, delimiter=',')
+
+k_ref_data = gen_smooth(1000)
+
+uu = k_ref_data[:, :27]
+h = 1.
 
 N = uu.shape[0]
 kk_fd = np.zeros(N)
@@ -83,17 +105,19 @@ for i in range(N):
     n = normal(g)
     kk_fd[i] = curv(n)
 
-kk_exact = k_exact_data[:, -1]
+kk_ref = k_ref_data[:, -1]
 
 
-plt.scatter(kk_exact, kk_fd)
-k = np.linspace(0,1)
+plt.scatter(kk_ref, kk_fd, s=1)
+k = np.linspace(kk_ref.min(),kk_ref.max())
 plt.plot(k, k)
-plt.xlabel(r'$\kappa_\mathrm{exact}$')
+plt.xlabel(r'$\kappa_\mathrm{ref}$')
 plt.ylabel(r'$\kappa_\mathrm{FD}$')
 #plt.xlim(0, 1)
 #plt.ylim(0, 1)
-plt.savefig('K_FD_overK_exact.pdf')
+plt.savefig('K_FD_overK_ref.pdf')
+
+exit()
 
 print(kk_fd)
 
