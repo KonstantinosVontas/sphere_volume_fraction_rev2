@@ -76,9 +76,12 @@ def curv(n):
 def gen_smooth(N, h=1, rmin=10, rmax=15):
     res = np.empty((N, 28))
     for i in range(N):
-        r = np.random.uniform(rmin, rmax)
-        x0, y0, z0 = r, 0, 0 # Center of central cell.
-        k_ref = 2 / r
+        # Center of central cell.
+        x0 = np.random.uniform(rmin, rmax)
+        y0 = np.random.uniform(rmin, rmax)
+        z0 = np.random.uniform(rmin, rmax)
+        r0 = (x0**2 + y0**2 + z0**2)**0.5
+        k_ref = 2 / r0
         for ix in range(3):
             for iy in range(3):
                 for iz in range(3):
@@ -93,7 +96,7 @@ def gen_smooth(N, h=1, rmin=10, rmax=15):
 #path = "../overlap_curvature.csv"
 #k_ref_data = np.genfromtxt(path, delimiter=',')
 
-k_ref_data = gen_smooth(1000)
+k_ref_data = gen_smooth(1000, rmin=0.5, rmax=1)
 
 uu = k_ref_data[:, :27]
 h = 1.
