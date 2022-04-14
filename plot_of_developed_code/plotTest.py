@@ -9,7 +9,7 @@ import matplotlib.ticker as mtick
 
 rows = []
 
-with open('../overlap_curvature.csv', 'r') as csvfile:
+with open('../overlap_curvature_h1.csv', 'r') as csvfile:
     csvreader = csv.reader(csvfile)
     for row in csvreader:
         rows.append(row)
@@ -33,7 +33,7 @@ writeme = df['sum']
 
 
 k = 0
-with open('../overlap_curvature_h2.csv', 'r') as read_obj, \
+with open('../overlap_curvature_h1.csv', 'r') as read_obj, \
         open('Overlap_curvature_Sum.csv', 'w', newline='') as write_obj:
 
     csvreader = csv.reader(read_obj)
@@ -71,9 +71,9 @@ print('The type of sum_of_alpha is ', type(sum_of_alpha[0]))
 
 
 plt.plot(curvature_Mycode, sum_of_alpha, 'o', color='black')
-plt.title('Sum of a over $\kappa_{mycode}$  for h = 2')
+plt.title('Sum of a over $\kappa_{mycode}$  for h = 1')
 plt.xlabel(r'$\kappa_\mathrm{Mycode}$')
 plt.ylabel(r'$\Sigma \alpha$')
-plt.savefig('Sum_alpha_over_K_mycode_for h_2.pdf')
+plt.savefig('Sum_alpha_over_K_mycode_for h_1.pdf')
 
 
