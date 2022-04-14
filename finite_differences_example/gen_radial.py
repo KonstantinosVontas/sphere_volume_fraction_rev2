@@ -28,7 +28,6 @@ for i in range(K_FD_values):
 print(K_0func)
 
 df = pd.DataFrame({'data':K_FD_column_data, 'kappa':K_0func})
-
 df.to_csv(r'2Kappa.csv', index=False, header=False)
 
 

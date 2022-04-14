@@ -3,10 +3,10 @@ from cgi import test
 from random import random
 import overlap
 import numpy as np
+import pandas as pd
 import csv
 import matplotlib.pyplot as plt
 from tqdm import tqdm
-from curvature_estimation.evaluation_for_only_one_case import *
 
 NUMBER_OF_SAMPLES = 2000
 
@@ -21,7 +21,7 @@ def random_normal_generation():
 def generate_random_point_in_center_cell():
     maximum_coordinate_value = 1
 
-    points = (np.random.rand(1, 3) * (2 * maximum_coordinate_value)) - maximum_coordinate_value
+    points = (np.random.rand(1, 3) * (1 * maximum_coordinate_value)) - maximum_coordinate_value
 
     return points
 
@@ -39,7 +39,7 @@ def generate_random_sphere():
 
 def generate_cube_from_center(point):
 
-    h = 2
+    h = 1
 
     cube_vertices = np.array((
         (point[0] - h / 2, point[1] - h / 2, point[2] - h / 2),
@@ -85,7 +85,7 @@ hexahedra = np.zeros(shape=(points.shape[0], 8, 3))
 for hexahedron_index in range(hexahedra.shape[0]):
     hexahedra[hexahedron_index, :, :] = generate_cube_from_center(points[hexahedron_index, :])
 
-with open('overlap_curvature.csv', 'w') as csv_file:
+with open('overlap_curvature_h1.csv', 'w') as csv_file:
     writer = csv.writer(csv_file)
 
     for sample_num in range(int(NUMBER_OF_SAMPLES)):
@@ -99,6 +99,7 @@ with open('overlap_curvature.csv', 'w') as csv_file:
 
         row.append(curvature)
 
-        row.append(estimate_curvature(row[0:27]))
-
         writer.writerow(row)
+
+
+
