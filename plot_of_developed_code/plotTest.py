@@ -21,7 +21,7 @@ d = rows
 df = pd.DataFrame(data = d)
 df  = df.astype(float)
 
-cols = range(0,27)  # [0, 1, 2, 3, ..., 25, 26]
+cols = range(0,27)
 df['sum'] = df[cols].sum(axis=1)
 
 #print(df)

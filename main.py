@@ -21,7 +21,7 @@ def random_normal_generation():
 def generate_random_point_in_center_cell():
     maximum_coordinate_value = 1
 
-    points = (np.random.rand(1, 3) * (1 * maximum_coordinate_value)) - maximum_coordinate_value
+    points = (np.random.rand(1, 3) * ((1 * maximum_coordinate_value) - maximum_coordinate_value))
 
     return points
 
@@ -55,7 +55,7 @@ def generate_cube_from_center(point):
 
 
 def points_of_regular_grid_generation():
-    axis_values = [-2, 0, 2]
+    axis_values = [-1, 0, 1] # was [-2, 0, 2]
 
     points = np.array([0, 0, 0])
 
@@ -68,7 +68,7 @@ def points_of_regular_grid_generation():
 
 
 def find_volume_fraction(cubicle_overlap):
-    maximum_volume = 8
+    maximum_volume = 1
 
     volume_fraction = cubicle_overlap / maximum_volume
 
