@@ -53,7 +53,6 @@ def generate_cube_from_center(point):
     ))
     return cube_vertices
 
-
 def points_of_regular_grid_generation():
     axis_values = [-1, 0, 1] # was [-2, 0, 2]
 
