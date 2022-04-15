@@ -76,4 +76,9 @@ plt.xlabel(r'$\kappa_\mathrm{Mycode}$')
 plt.ylabel(r'$\Sigma \alpha$')
 plt.savefig('Sum_alpha_over_K_mycode_for h_1.pdf')
 
+# --------------- plot of K_FD over K_myCode ---------#
+
+
+
+
 

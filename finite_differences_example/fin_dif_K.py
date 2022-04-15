@@ -73,7 +73,7 @@ def curv(n):
 
 
 
-def gen_smooth(N, h=1, rmin=10, rmax=15):
+def gen_smooth(N, h=1, rmin=1, rmax=10):
     res = np.empty((N, 28))
     for i in range(N):
         # Center of central cell.
@@ -96,7 +96,7 @@ def gen_smooth(N, h=1, rmin=10, rmax=15):
 #path = "../overlap_curvature.csv"
 #k_ref_data = np.genfromtxt(path, delimiter=',')
 
-k_ref_data = gen_smooth(1000, rmin=0.5, rmax=1)
+k_ref_data = gen_smooth(2000, rmin=0.5, rmax=1)
 
 uu = k_ref_data[:, :27]
 h = 1.
@@ -110,6 +110,8 @@ for i in range(N):
 
 kk_ref = k_ref_data[:, -1]
 
+'''
+
 
 plt.scatter(kk_ref, kk_fd, s=1)
 k = np.linspace(kk_ref.min(),kk_ref.max())
@@ -119,8 +121,8 @@ plt.ylabel(r'$\kappa_\mathrm{FD}$')
 #plt.xlim(0, 1)
 #plt.ylim(0, 1)
 plt.savefig('K_FD_overK_ref.pdf')
-
-exit()
+'''
+#exit()
 
 print(kk_fd)
 
@@ -135,7 +137,23 @@ writer.writerow(kk_fd)
 
 pd.read_csv('K_FD_column.csv', header=None).T.to_csv('K_FD_final.csv', header=False, index=False)
 
-
-
-# close the file
 f.close()
+
+
+
+
+path = "../overlap_curvature_h1.csv"
+data = np.genfromtxt(path, delimiter=',')
+
+K_myCode = data[:, 27]
+print(K_myCode)
+
+
+
+plt.plot(kk_fd, K_myCode, 'o', color='black')
+plt.title('$\kappa_{FD}$ over $\kappa_{myCode}$')
+plt.xlabel(r'$\kappa_{myCode}$')
+plt.ylabel(r'$\kappa_{FD}$')
+plt.savefig('curvature of myCode and K_FD.pdf')
+
+
