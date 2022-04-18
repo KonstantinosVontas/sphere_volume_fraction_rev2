@@ -12,23 +12,29 @@ NUMBER_OF_SAMPLES = 2000
 
 
 def random_normal_generation():
-    v = np.random.normal(size=(1, 3))
-    v = v / np.sqrt(np.sum(v ** 2))
+    n = np.array([[1], [0], [0]])
+    #n = np.random.normal(size=(1, 3))
+    #n = n / np.sqrt(np.sum(n ** 2))
 
-    return v
+    return n
 
 
 def generate_random_point_in_center_cell():
-    maximum_coordinate_value = 1
+    #maximum_coordinate_value = 1
 
-    points = (np.random.rand(1, 3) * ((1 * maximum_coordinate_value) - maximum_coordinate_value))
+    points = (np.random.rand(1, 3)) * 2 -1
+    #test = (np.random.rand(1, 3))  #* (1 * maximum_coordinate_value) - maximum_coordinate_value)
+    #test2 = np.random.rand(1, 3)
+    #print("This is the test", test)
+    #print("This is the test2 rand", test2)
 
     return points
 
 
+
 def generate_random_sphere():
     normal = random_normal_generation()
-    radius = np.random.uniform(8, 40)
+    radius = np.random.uniform()
 
     point = generate_random_point_in_center_cell()
 
@@ -102,3 +108,4 @@ with open('overlap_curvature_h1.csv', 'w') as csv_file:
 
 
 
+print("this is the point", points)

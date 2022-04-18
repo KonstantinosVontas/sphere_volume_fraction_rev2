@@ -164,6 +164,8 @@ plt.plot(K_myCode, kk_fd, 'o', color='black')
 plt.title('$\kappa_{FD}$ over $\kappa_{myCode}$')
 plt.xlabel(r'$\kappa_{myCode}$')
 plt.ylabel(r'$\kappa_{fd}$')
+plt.xlim(0, 100)
+#plt.ylim(0, 1)
 plt.savefig('curvature of myCode and K_FD.pdf')
 
 
