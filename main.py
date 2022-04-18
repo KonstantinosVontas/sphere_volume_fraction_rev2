@@ -28,7 +28,7 @@ def generate_random_point_in_center_cell():
 
 def generate_random_sphere():
     normal = random_normal_generation()
-    radius = np.random.uniform(1, 10)
+    radius = np.random.uniform(8, 40)
 
     point = generate_random_point_in_center_cell()
 
