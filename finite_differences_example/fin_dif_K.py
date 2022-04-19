@@ -96,7 +96,7 @@ def gen_smooth(N, h=1, rmin=4, rmax=25):
 #path = "../overlap_curvature.csv"
 #k_ref_data = np.genfromtxt(path, delimiter=',')
 
-k_ref_data = gen_smooth(2000, rmin=4, rmax=25)
+k_ref_data = gen_smooth(2000, rmin=4, rmax=25) #rmin=4, rmax=25
 
 uu = k_ref_data[:, :27]
 h = 1.
@@ -164,7 +164,7 @@ plt.plot(K_myCode, kk_fd, 'o', color='black')
 plt.title('$\kappa_{FD}$ over $\kappa_{myCode}$')
 plt.xlabel(r'$\kappa_{myCode}$')
 plt.ylabel(r'$\kappa_{fd}$')
-plt.xlim(0, 100)
+#plt.xlim(0, 100)
 #plt.ylim(0, 1)
 plt.savefig('curvature of myCode and K_FD.pdf')
 

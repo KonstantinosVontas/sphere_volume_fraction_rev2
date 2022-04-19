@@ -34,7 +34,7 @@ def generate_random_point_in_center_cell():
 
 def generate_random_sphere():
     normal = random_normal_generation()
-    radius = np.random.uniform()
+    radius = np.random.uniform(8, 40)
 
     point = generate_random_point_in_center_cell()
 
@@ -107,5 +107,3 @@ with open('overlap_curvature_h1.csv', 'w') as csv_file:
         writer.writerow(row)
 
 
-
-print("this is the point", points)
