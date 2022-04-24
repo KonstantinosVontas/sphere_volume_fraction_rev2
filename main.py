@@ -8,29 +8,30 @@ import csv
 import matplotlib.pyplot as plt
 from tqdm import tqdm
 
-NUMBER_OF_SAMPLES = 2000
+NUMBER_OF_SAMPLES = 5
 
 
 def random_normal_generation():
-    n = np.array([[1], [0], [0]])
-    #n = np.random.normal(size=(1, 3))
-    #n = n / np.sqrt(np.sum(n ** 2))
+    #n = np.array([[1], [0], [0]])
+    n = np.random.normal(size=(1, 3))
+    n = n / np.sqrt(np.sum(n ** 2))
+    #print("This is the normal", n)
 
     return n
 
 
 def generate_random_point_in_center_cell():
-    #maximum_coordinate_value = 1
 
-    points = (np.random.rand(1, 3)) * 2 -1
-    #test = (np.random.rand(1, 3))  #* (1 * maximum_coordinate_value) - maximum_coordinate_value)
-    #test2 = np.random.rand(1, 3)
-    #print("This is the test", test)
-    #print("This is the test2 rand", test2)
+    points = (np.random.rand(1, 3)) -0.5
+
+    print('The points from generate_random_point_in_center_cell are: ', points)
+
 
     return points
 
 
+coordinates = []
+volume_fraction = []
 
 def generate_random_sphere():
     normal = random_normal_generation()
@@ -40,7 +41,10 @@ def generate_random_sphere():
 
     center = point - radius * normal
 
-    return overlap.Sphere(tuple(center[0]), radius)
+    coordinates = np.vstack(center)
+    #print(coordinates)
+
+    return center,radius,overlap.Sphere(tuple(center[0]), radius)
 
 
 def generate_cube_from_center(point):
@@ -80,6 +84,7 @@ def find_volume_fraction(cubicle_overlap):
     if volume_fraction > 1:
         volume_fraction = 1
 
+    #print("This is the volume fraction", volume_fraction)
     return volume_fraction
 
 
@@ -89,12 +94,13 @@ hexahedra = np.zeros(shape=(points.shape[0], 8, 3))
 
 for hexahedron_index in range(hexahedra.shape[0]):
     hexahedra[hexahedron_index, :, :] = generate_cube_from_center(points[hexahedron_index, :])
+    #print('this is alpha', aa)
 
 with open('overlap_curvature_h1.csv', 'w') as csv_file:
     writer = csv.writer(csv_file)
 
     for sample_num in range(int(NUMBER_OF_SAMPLES)):
-        sphere = generate_random_sphere()
+        center,radius,sphere = generate_random_sphere()
         curvature = 2 / sphere.radius
 
         row = []
@@ -107,3 +113,42 @@ with open('overlap_curvature_h1.csv', 'w') as csv_file:
         writer.writerow(row)
 
 
+row=np.array(row)
+#a=row[0:9]
+#a=a.reshape((3,3))
+
+y=np.linspace(-1,1,3)
+z=np.linspace(-1,1,3)
+Y,Z=np.meshgrid(y,z)
+Y=Y.astype(int)
+Z=Z.astype(int)
+
+a=np.zeros(Y.shape)
+
+for j in range(Y.shape[1]):
+    for k in range(Y.shape[0]):
+        a[k,j]=row[k+j*(Y.shape[1])]
+
+
+
+#calculate the position of cut sphere
+xpos=-1 # since we are showing the normal on the x axis plane
+cx=center[0,0]
+r_cut=np.sqrt(radius**2-(cx-xpos)**2) # radius of cut sphere
+
+circle=plt.Circle((center[0,1],center[0,2]),r_cut,color='black',fill=False) # draw a sphere
+fig,ax=plt.subplots()
+
+
+im=ax.contourf(Y,Z,a)
+ax.scatter(points[0:9,1],points[0:9,2])
+fig.colorbar(im)
+ax.set_xlim([-1.1, 1.1])
+ax.set_ylim([-1.1, 1.1])
+plt.xlabel('Y-axis')
+plt.ylabel('Z-axis')
+plt.title('Vapour Fraction')
+ax.add_patch(circle)
+plt.savefig('volume fraction 2D plot.pdf')
+#plt.show()
+exit()
