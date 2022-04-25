@@ -6,6 +6,7 @@ import numpy as np
 import pandas as pd
 import csv
 import matplotlib.pyplot as plt
+from matplotlib import image as mpimg
 from tqdm import tqdm
 
 NUMBER_OF_SAMPLES = 5
@@ -113,6 +114,7 @@ with open('overlap_curvature_h1.csv', 'w') as csv_file:
         writer.writerow(row)
 
 
+
 row=np.array(row)
 #a=row[0:9]
 #a=a.reshape((3,3))
@@ -129,26 +131,22 @@ for j in range(Y.shape[1]):
     for k in range(Y.shape[0]):
         a[k,j]=row[k+j*(Y.shape[1])]
 
-
-
-#calculate the position of cut sphere
 xpos=-1 # since we are showing the normal on the x axis plane
 cx=center[0,0]
 r_cut=np.sqrt(radius**2-(cx-xpos)**2) # radius of cut sphere
 
-circle=plt.Circle((center[0,1],center[0,2]),r_cut,color='black',fill=False) # draw a sphere
+circle=plt.Circle((center[0,1],center[0,2]),r_cut,color='black',fill=False, linewidth=2.5) # draw a sphere
 fig,ax=plt.subplots()
 
-
-im=ax.contourf(Y,Z,a)
-ax.scatter(points[0:9,1],points[0:9,2])
+im = ax.imshow(a, interpolation='nearest', extent=[-1.5, 1.5, -1.5, 1.5])
+ax.add_patch(circle)
 fig.colorbar(im)
-ax.set_xlim([-1.1, 1.1])
-ax.set_ylim([-1.1, 1.1])
+ax.scatter(points[0:9,1],points[0:9,2])
+ax.set_xlim([-1.6, 1.6])
+ax.set_ylim([-1.6, 1.6])
 plt.xlabel('Y-axis')
 plt.ylabel('Z-axis')
-plt.title('Vapour Fraction')
-ax.add_patch(circle)
+plt.title('Volume Fraction')
 plt.savefig('volume fraction 2D plot.pdf')
-#plt.show()
-exit()
+plt.show()
+
